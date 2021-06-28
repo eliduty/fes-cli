@@ -2,9 +2,12 @@
   "name": "@eliduty/fes-cli",
   "version": "1.0.0",
   "description": "frontend starter cli",
-  "main": "src/index.js",
+  "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "fes create abc"
+  },
+  "bin": {
+    "fes": "./bin/fes"
   },
   "publishConfig": {
     "access": "public"
@@ -17,6 +20,18 @@
   "author": "eliduty",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.3.2",
     "standard-version": "^9.3.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "commander": "^8.0.0",
+    "download-git-repo": "^3.0.2",
+    "figlet": "^1.5.0",
+    "log-symbols": "^4.1.0",
+    "ora": "^5.4.1",
+    "shelljs": "^0.8.4"
   }
 }
