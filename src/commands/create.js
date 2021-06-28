@@ -6,7 +6,7 @@ const { download } = require('../utils');
 const { checkGit, checkFileName, checkFileExist } = require('../utils/validate');
 
 const create = async (name, options) => {
-  const gitUrl = 'https://github.com/eliduty/fes.git#main';
+  const gitUrl = 'https://gitee.com/eliduty/fes.git#main';
   const destination = `E:/test/fes-cli-test/${name}`;
   const path = shell.pwd();
   // 检查git是否可用
@@ -24,25 +24,15 @@ const create = async (name, options) => {
   } else {
     spinner.succeed(chalk.green('模板下载成功！'));
   }
-
-
-
-
-  // log.error(chalk.red(123123));
-  // ora().fail(chalk.red(123123));
-  // console.log(chalk.underline.blueBright.bold(123123123));
-  // // ora().fail(chalk.red('失败'));
-  // const spinner = ora('正在下载模板...').start();
-  // setTimeout(() => {
-  //   spinner.fail(chalk.red('失败'));
-  // }, 1000);
-
-  // const spinner = ora('Loading unicorns').start();
-
-  // setTimeout(() => {
-  //   spinner.color = 'yellow';
-  //   spinner.text = 'Loading rainbows';
-  // }, 1000);
+  shell.cd(destination);
+  const installSpinner = ora('正在安装依赖...').start();
+  if (shell.exec('npm install').code !== 0) {
+    console.log(symbols.warning, chalk.yellow('自动安装失败，请手动安装！'));
+    installSpinner.fail();
+    shell.exit(1);
+  }
+  installSpinner.succeed(chalk.green('依赖安装成功！'));
+  log.success('\n       ♪(＾∀＾●)ﾉ \n\n  ❤   恭喜，项目创建成功  ❤ \n');
 };
 
 module.exports = create;
