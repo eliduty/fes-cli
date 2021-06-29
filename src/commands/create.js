@@ -2,7 +2,7 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 const ora = require('ora');
 const log = require('../utils/log');
-const { download } = require('../utils');
+const { clone } = require('../utils/git');
 const { checkGit, checkFileName, checkFileExist } = require('../utils/validate');
 
 const create = async (name, options) => {
@@ -17,7 +17,7 @@ const create = async (name, options) => {
   if (checkFileExist(destination)) return log.error(`${name}目录已存在！`);
 
   const spinner = ora('正在下载模板...').start();
-  const err = await download(gitUrl, destination);
+  const err = await clone(gitUrl, destination);
   if (err) {
     spinner.fail();
     log.error(`下载文件出错，请检查网络是否正常！`);
@@ -25,6 +25,9 @@ const create = async (name, options) => {
     spinner.succeed(chalk.green('模板下载成功！'));
   }
   shell.cd(destination);
+
+  // TODO:package 文件对比
+
   const installSpinner = ora('正在安装依赖...').start();
   if (shell.exec('npm install').code !== 0) {
     console.log(symbols.warning, chalk.yellow('自动安装失败，请手动安装！'));
@@ -32,7 +35,7 @@ const create = async (name, options) => {
     shell.exit(1);
   }
   installSpinner.succeed(chalk.green('依赖安装成功！'));
-  log.success('\n       ♪(＾∀＾●)ﾉ \n\n  ❤   恭喜，项目创建成功  ❤ \n');
+  log.success('恭喜，项目创建成功！');
 };
 
 module.exports = create;

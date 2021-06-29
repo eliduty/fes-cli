@@ -1,18 +1,20 @@
-const ora = require('ora');
 const download = require('download-git-repo');
+
+/**
+ * git仓库下载 （https://www.npmjs.com/package/download-git-repo）
+ * @param {*} repository git地址
+ * @param {*} destination 下载位置
+ * @param {*} options 配置
+ * @returns
+ */
+function clone(repository, destination, options = { clone: true }) {
+  return new Promise((resolve, reject) => {
+    download(`direct:${repository}`, destination, options, err => {
+      err ? reject(err) : resolve(err);
+    });
+  });
+}
+
 module.exports = {
-  clone: (remote, name, option) => {
-    const spinner = ora('开始下载...').start();
-    return new Promise((resolve, reject) =>
-      download(remote, name, option, err => {
-        if (err) {
-          spinner.fail();
-          logError(err);
-          return reject(err);
-        }
-        spinner.succeed(chalk.green('下载完成！'));
-        resolve();
-      })
-    );
-  },
+  clone,
 };
