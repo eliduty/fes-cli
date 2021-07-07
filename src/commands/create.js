@@ -28,7 +28,7 @@ const create = async (name, options) => {
 
   // TODO:package 文件对比
 
-  const installSpinner = ora('正在安装依赖...').start();
+  const installSpinner = ora('正在安装依赖...\n').start();
   if (shell.exec('npm install').code !== 0) {
     console.log(symbols.warning, chalk.yellow('自动安装失败，请手动安装！'));
     installSpinner.fail();

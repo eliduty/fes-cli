@@ -11,6 +11,30 @@ function checkGit() {
 }
 
 /**
+ * 检查当前目录是否有package.json
+ * @returns
+ */
+ function checkNpmInit() {
+  return checkFileExist('package.json');
+}
+
+/**
+ * 检查git是否初始化
+ * @returns
+ */
+function checkGitInit() {
+  return checkFileExist('.git')
+}
+
+/**
+ * 检查husky是否初始化
+ * @returns
+ */
+function checkHuskyInit() {
+  return checkFileExist('.husky')
+}
+
+/**
  * 检查文件名称是否合法
  * @param {*} val
  * @returns
@@ -31,5 +55,8 @@ function checkFileExist(file) {
 module.exports = {
   checkGit,
   checkFileName,
-  checkFileExist
+  checkFileExist,
+  checkNpmInit,
+  checkGitInit,
+  checkHuskyInit
 };
