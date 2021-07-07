@@ -1,27 +1,28 @@
 const { copySync, removeSync } = require('fs-extra');
-const { resolve, join } = require('path');
+const { join } = require('path');
+const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist } = require('../utils/validate');
+const { success, error } = require('../utils/log');
+const { clone } = require('../utils/git');
+const { configFileName } = require('../config');
 const shell = require('shelljs');
 const merge = require('deepmerge');
-const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist } = require('../utils/validate');
-const log = require('../utils/log');
-const { clone } = require('../utils/git');
 const ora = require('ora');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 
-const fesConfig = require('../config/fes.config');
-let config = require('../config');
+let fesConfig = require('../config/fes.config');
 
 const start = async () => {
-  if (!checkGit()) return log.error('Git不可用，请安装Git后再试！');
+  if (!checkGit()) return error('Git不可用，请安装Git后再试！');
   const pwd = process.cwd();
-  let extendConfigPath = resolve(__dirname, pwd, config.configFileName);
+  let extendConfigPath = join(pwd, configFileName);
   if (checkFileExist(extendConfigPath)) {
     // 动态加载项目配置
     let extendConfig = require(extendConfigPath);
     fesConfig = merge(fesConfig, extendConfig);
   }
-  let templateList = Object.keys(fesConfig.template);
+
+  let templateList = Object.keys(fesConfig.configTemplate);
   let templateName = templateList[0];
   if (templateList.length > 1) {
     const templateQuestion = [
@@ -36,9 +37,9 @@ const start = async () => {
     templateName = templateAnswers.template;
   }
   // 配置依赖项
-  const dependencies = Object.values(fesConfig.template[templateName].dependencies).flat();
+  const dependencies = Object.values(fesConfig.configTemplate[templateName].dependencies).flat();
   // 配置仓库地址
-  const templateGitRepository = fesConfig.template[templateName].repository;
+  const templateGitRepository = fesConfig.configTemplate[templateName].repository;
 
   const configTempPath = join(pwd, 'fes_temp');
   // 清除临时目录
@@ -57,9 +58,9 @@ const start = async () => {
   installDependencies(dependencies);
 
   // git下载配置模板
- await downloadTemplate(templateGitRepository, configTempPath);
+  await downloadTemplate(templateGitRepository, configTempPath);
 
-  log.success('\n\n恭喜，项目创建成功！\n\n');
+  success('\n\n恭喜，项目创建成功！\n\n');
 };
 
 /**
