@@ -1,19 +1,24 @@
+const merge = require('deepmerge');
+const ora = require('ora');
+const chalk = require('chalk');
+const inquirer = require('inquirer');
 const { copySync, removeSync } = require('fs-extra');
 const { join } = require('path');
 const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist } = require('../utils/validate');
 const { success, error } = require('../utils/log');
 const { clone } = require('../utils/git');
 const { configFileName } = require('../config');
-const shell = require('shelljs');
-const merge = require('deepmerge');
-const ora = require('ora');
-const chalk = require('chalk');
-const inquirer = require('inquirer');
+const { exec, exit, cd, mkdir, which } = require('shelljs');
 
 let fesConfig = require('../config/fes.config');
 
-const start = async () => {
+const start = async name => {
   if (!checkGit()) return error('Git不可用，请安装Git后再试！');
+  if (name) {
+    if (checkFileExist(join(process.cwd(), name))) return error(`${name}目录已存在！`);
+    mkdir('-p', name);
+    cd(name);
+  }
   const pwd = process.cwd();
   let extendConfigPath = join(pwd, configFileName);
   if (checkFileExist(extendConfigPath)) {
@@ -57,10 +62,17 @@ const start = async () => {
   // 安装项目依赖
   installDependencies(dependencies);
 
-  // git下载配置模板
+  // git下载配置模板 git下载到临时目录防止git冲突
   await downloadTemplate(templateGitRepository, configTempPath);
 
+  // 删除临时目录
+  removeTempDir(configTempPath);
+
   success('\n\n恭喜，项目创建成功！\n\n');
+
+  // vscode 编辑器打开项目
+  if (which('code')) exec('code ./');
+  exit(0);
 };
 
 /**
@@ -68,9 +80,9 @@ const start = async () => {
  */
 function npmInit() {
   const spinner = ora('正在初始化npm...\n').start();
-  if (shell.exec('npm init -y').code !== 0) {
+  if (exec('npm init -y').code !== 0) {
     spinner.fail(chalk.red('npm初始化失败，请手动执行 `npm init -y`'));
-    shell.exit(1);
+    exit(1);
   }
   spinner.succeed(chalk.green('npm初始化成功！'));
 }
@@ -80,9 +92,9 @@ function npmInit() {
  */
 function gitInit() {
   const spinner = ora('正在初始化git\n').start();
-  if (shell.exec('git init').code !== 0) {
+  if (exec('git init').code !== 0) {
     spinner.fail(chalk.red('git初始化失败，请手动执行 `git init`'));
-    shell.exit(1);
+    exit(1);
   }
   spinner.succeed(chalk.green('git初始化成功！'));
 }
@@ -93,9 +105,9 @@ function gitInit() {
 async function huskyInit() {
   const pwd = process.cwd();
   const spinner = ora('正在初始化husky\n').start();
-  if (shell.exec('npm install -D husky && npx husky install').code !== 0) {
+  if (exec('npm install -D husky && npx husky install').code !== 0) {
     spinner.fail(chalk.red('husky初始化失败，请手动执行 `npm install -D husky && npx husky install`'));
-    shell.exit(1);
+    exit(1);
   }
   copySync(join(__dirname, '../git-hooks'), join(pwd, '.husky/'));
   spinner.succeed(chalk.green('husky初始化成功！'));
@@ -106,9 +118,9 @@ async function huskyInit() {
  */
 function installDependencies(dependencies) {
   const dependenciesSpinner = ora('正在安装项目依赖...\n').start();
-  if (shell.exec(`npm install -D ${dependencies.join(' ')}`).code !== 0) {
+  if (exec(`npm install -D ${dependencies.join(' ')}`).code !== 0) {
     dependenciesSpinner.fail(chalk.red('项目依赖安装失败！'));
-    shell.exit(1);
+    exit(1);
   }
   dependenciesSpinner.succeed(chalk.green('项目依赖安装成功！'));
 }
@@ -119,19 +131,25 @@ function installDependencies(dependencies) {
  * @param {*} target
  */
 async function downloadTemplate(source, target) {
-  const pwd = process.cwd();
   // git下载配置模板
   const downloadSpinner = ora('正在下载配置模板...\n').start();
-  // git下载到临时目录防止git冲突
-  const err = await clone(source, target);
-  if (err) {
-    downloadSpinner.fail(chalk.red(`配置下载模板出错，请检查网络是否正常！`));
-    shell.exit(1);
+  try {
+    await clone(source, target);
+    downloadSpinner.succeed(chalk.green('配置模板下载成功！'));
+  } catch (error) {
+    spinner.fail(chalk.red(`下载配置模板，错误信息：【${error.message}】`));
+    exit(1);
   }
+}
+
+/**
+ * 删除临时目录
+ */
+function removeTempDir(target) {
+  const pwd = process.cwd();
   // 拷贝所有临时目录的文件到项目目录
   copySync(target, pwd);
   removeSync(target);
-  downloadSpinner.succeed(chalk.green('配置模板下载成功！'));
 }
 
 module.exports = start;

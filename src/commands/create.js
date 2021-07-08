@@ -1,15 +1,15 @@
-const shell = require('shelljs');
 const chalk = require('chalk');
 const ora = require('ora');
 const merge = require('deepmerge');
 const inquirer = require('inquirer');
+const { exec, exit, cd, which } = require('shelljs');
 const { join } = require('path');
 const { configFileName } = require('../config');
 const { success, error } = require('../utils/log');
 const { clone } = require('../utils/git');
 const { checkGit, checkFileName, checkFileExist } = require('../utils/validate');
 let fesConfig = require('../config/fes.config');
-const create = async (name, options) => {
+const create = async name => {
   const pwd = process.cwd();
   const destination = join(pwd, name);
   // 检查git是否可用
@@ -43,26 +43,31 @@ const create = async (name, options) => {
   const templateGitRepository = fesConfig.projectTemplate[templateName].repository;
   await downloadTemplate(templateGitRepository, destination);
   // 下载成功进入项目目录
-  shell.cd(destination);
+  cd(destination);
   installDependencies();
 
   success('\n\n恭喜，项目创建成功！\n\n');
+
+  // vscode 编辑器打开项目
+  if (which('code')) exec('code ./');
+  exit(0);
 };
 async function downloadTemplate(source, target) {
   const spinner = ora('正在下载模板...').start();
-  const err = await clone(source, target);
-  if (err) {
-    spinner.fail(chalk.red('下载文件出错，请检查网络是否正常！'));
-    shell.exit(1);
+  try {
+    await clone(source, target);
+    spinner.succeed(chalk.green('模板下载成功！'));
+  } catch (error) {
+    spinner.fail(chalk.red(`下载文件出错，错误信息：【${error.message}】`));
+    exit(1);
   }
-  spinner.succeed(chalk.green('模板下载成功！'));
 }
 
 function installDependencies() {
   const spinner = ora('正在安装依赖...\n').start();
-  if (shell.exec('npm install').code !== 0) {
+  if (exec('npm install').code !== 0) {
     spinner.fail(chalk.red('依赖安装失败，请手动执行`npm install`！'));
-    shell.exit(1);
+    exit(1);
   }
   spinner.succeed(chalk.green('依赖安装成功！'));
 }
