@@ -66,6 +66,8 @@ const start = async name => {
   // 安装项目依赖
   installDependencies(dependencies);
 
+  // 设置script命令
+  setScript();
   // git下载配置模板 git下载到临时目录防止git冲突
   await downloadTemplate(templateGitRepository, configTempPath);
 
@@ -154,6 +156,10 @@ function removeTempDir(target) {
   // 拷贝所有临时目录的文件到项目目录
   copySync(target, pwd);
   removeSync(target);
+}
+
+function setScript() {
+  exec(`npm set-script release "standard-version -i docs/CHANGELOG.md"`)
 }
 
 module.exports = start;

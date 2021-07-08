@@ -1,7 +1,7 @@
 # fes-cli ![npm](https://img.shields.io/npm/dt/@eliduty/fes-cli)![npm](https://img.shields.io/npm/v/@eliduty/fes-cli)
 ## 介绍
 
-fes(frontend starter)为前端项目开发脚手架，主要提供了以下功能：
+[fes](https://github.com/eliduty/fes-cli)(frontend starter)为前端项目开发脚手架，主要提供了以下功能：
 
 1. 快速为项目创建、添加、更新前端工程化相关的配置功能，包括[eslint](https://eslint.bootcss.com/)、[prettier](https://prettier.io/)、[stylelint](https://stylelint.io/)、[commitlint](https://commitlint.js.org/)、[lint-staged](https://www.npmjs.com/package/lint-staged)、[standard-version](https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.1.0/README.md)、[editorConfig](https://editorconfig.org/)，支持自定义添加功能。
 2. 基于git仓库模板，快速创建项目。脚手架内置已内置两个优秀的项目模板：[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin.git)和[ant-design-vue-pro](https://github.com/vueComponent/ant-design-vue-pro.git)，支持自定义添加项目模板。
@@ -64,8 +64,8 @@ npm i -g @eliduty/fes-cli
 
 | 配置名称        | 命令         | 说明                                                         |
 | --------------- | ------------ | ------------------------------------------------------------ |
-| configTemplate  | `fes start`  | 配置`fes start`命令选项，fes-cli提供了vue2、vue3的配置选项。 |
-| projectTemplate | `fes create` | 配置`fes create`创建的仓库命令行选项，fes-cli提供了[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin.git)、[ant-design-vue-pro](https://github.com/vueComponent/ant-design-vue-pro.git)模板 |
+| configTemplate  | `fes start`  | 配置`fes start`命令选项，[fes-cli](https://github.com/eliduty/fes-cli)提供了vue2、vue3的配置选项。 |
+| projectTemplate | `fes create` | 配置`fes create`创建的仓库命令行选项，[fes-cli](https://github.com/eliduty/fes-cli)提供了[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin.git)、[ant-design-vue-pro](https://github.com/vueComponent/ant-design-vue-pro.git)模板 |
 
 fes-cli 内置配置参考：
 
@@ -118,12 +118,47 @@ module.exports = {
 
 ```
 
-**注意：**repository为模板的git地址#号后为分支名称。
+**注意：** repository为模板的git地址#号后为分支名称。
 
 ## 说明
 
 - 模板下载需要使用git，客户端须先安装[git](https://git-scm.com/downloads)后，方可使用该工具。
 - 项目名称仅支持大小写字母、数字、_、-。
-
 - `fes start`命令可以直接从配置仓库中下载配置更新项目配置，若项目中对配置进行了修改，执行命令后会覆盖配置，注意：配置文件的备份或始终保持在仓库中更新配置。
 - 在网络通畅的情况下，工具支持私有化仓库下载模板。
+- fes.config.js文件生效路径为终端所在路径，并非一定在项目路径下。
+- 使用[fes-cli](https://github.com/eliduty/fes-cli)时，请确保[npm](https://www.npmjs.com/)访问正常，避免依赖安装失败。
+
+## 常见问题
+#### 问题1：在项目安装过程中出现“下载配置模板，错误信息：【git clone failed with code 128】”。
+
+造成此问题的原因一般是由于仓库权限或网络问题，造成git无法访问。
+
+**解决办法：**可使用自定义配置切换仓库为国内镜像仓库。
+
+1. 执行`fes init`生成配置文件。
+
+2. 再配置文件中写入一下内容。
+
+```javascript
+module.exports = {
+  configTemplate: {
+    vue2: {
+      repository:"https://gitee.com/eliduty/fes-config.git#vue2"
+    },
+    vue3: {
+      repository:"https://gitee.com/eliduty/fes-config.git#vue3"
+    }
+  },
+  projectTemplate: {
+    'vue-element-admin': {
+      repository: 'https://gitee.com/PanJiaChen/vue-element-admin.git'
+    },
+    'ant-design-pro-vue': {
+      repository:'https://gitee.com/sendya/ant-design-pro-vue.git'
+    }
+  }
+};
+
+```
+
