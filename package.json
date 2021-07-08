@@ -4,7 +4,8 @@
   "description": "frontend starter cli",
   "main": "src/main.js",
   "scripts": {
-    "test": "fes create abc"
+    "publish": "npm run release && npm publish",
+    "release": "standard-version -i docs/CHANGELOG.md"
   },
   "bin": {
     "fes": "./bin/fes"
@@ -15,10 +16,25 @@
   "keywords": [
     "frontend",
     "dev",
-    "cli"
+    "cli",
+    "template",
+    "vue",
+    "react"
   ],
   "author": "eliduty",
   "license": "ISC",
+  "homepage": "https://github.com/eliduty/fes-cli",
+  "bugs": {
+    "url": "https://github.com/eliduty/fes-cli/issues",
+    "email": "eliduty@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eliduty/fes-cli"
+  },
+  "engines": {
+    "node": ">=12"
+  },
   "devDependencies": {
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
