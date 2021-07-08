@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/eliduty/fes-cli/compare/v1.2.1...v1.2.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* fes start 命令增加生成changelog命令 ([a4ba1c7](https://github.com/eliduty/fes-cli/commit/a4ba1c77ced8c14c78e16520a36d8d56520b4469))
+
 ### [1.2.1](https://github.com/eliduty/fes-cli/compare/v1.2.0...v1.2.1) (2021-07-08)
 
 
