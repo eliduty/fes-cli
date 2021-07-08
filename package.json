@@ -1,11 +1,10 @@
 {
   "name": "@eliduty/fes-cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "frontend starter cli",
   "main": "src/main.js",
   "scripts": {
-    "publish": "npm run release && npm publish",
-    "release": "standard-version -i docs/CHANGELOG.md"
+    "publish": "standard-version -i docs/CHANGELOG.md && git push --follow-tags origin main && npm publish"
   },
   "bin": {
     "fes": "./bin/fes"
