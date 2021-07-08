@@ -26,6 +26,7 @@ const create = async name => {
     fesConfig = merge(fesConfig, extendConfig);
   }
   let templateList = Object.keys(fesConfig.projectTemplate);
+  if (templateList.length === 0) return error('未找到可用的项目模板！');
   let templateName = templateList[0];
   if (templateList.length > 1) {
     const templateQuestion = [
@@ -45,9 +46,7 @@ const create = async name => {
   // 下载成功进入项目目录
   cd(destination);
   installDependencies();
-
-  success('\n\n恭喜，项目创建成功！\n\n');
-
+  success(`\n\n恭喜，项目创建成功！\n\n模板仓库地址：${templateGitRepository}\n\n`);
   // vscode 编辑器打开项目
   if (which('code')) exec('code ./');
   exit(0);
