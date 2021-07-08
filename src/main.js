@@ -11,7 +11,7 @@ const init = require('./commands/init');
 console.log(chalk(figlet.textSync(config.appName)));
 
 // 注册版本查看命令
-program.version(config.version);
+program.version(config.version,'-v');
 
 program.command('init').description('fes初始化，生成配置文件。').action(init);
 program.command('start [name]').description('添加前端工程化配置，name为可选参数，不设置为当前目录。').action(start);

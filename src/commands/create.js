@@ -45,7 +45,8 @@ const create = async name => {
   await downloadTemplate(templateGitRepository, destination);
   // 下载成功进入项目目录
   cd(destination);
-  installDependencies();
+  console.log('packageJson', checkNpmInit());
+  checkNpmInit() && installDependencies();
   success(`\n\n恭喜，项目创建成功！\n\n模板仓库地址：${templateGitRepository}\n\n`);
   // vscode 编辑器打开项目
   if (which('code')) exec('code ./');

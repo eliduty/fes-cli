@@ -2,9 +2,10 @@ const merge = require('deepmerge');
 const ora = require('ora');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
+const { readFileSync } = require('fs');
 const { copySync, removeSync } = require('fs-extra');
 const { join } = require('path');
-const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist } = require('../utils/validate');
+const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist, checkFileName } = require('../utils/validate');
 const { success, error } = require('../utils/log');
 const { clone } = require('../utils/git');
 const { configFileName } = require('../config');
@@ -15,6 +16,9 @@ let fesConfig = require('../config/fes.config');
 const start = async name => {
   if (!checkGit()) return error('Git不可用，请安装Git后再试！');
   if (name) {
+    // 检查参数是否合法
+    if (checkFileName(name)) return error('项目名称存在非法字符！');
+    // 检查目录是否存在
     if (checkFileExist(join(process.cwd(), name))) return error(`${name}目录已存在！`);
     mkdir('-p', name);
     cd(name);

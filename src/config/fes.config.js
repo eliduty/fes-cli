@@ -1,5 +1,5 @@
 module.exports = {
-  // 工程化项目配置模板
+  // fes start 工程化项目配置模板
   configTemplate: {
     vue2: {
       dependencies: {
@@ -10,7 +10,7 @@ module.exports = {
         commitlint: ['@commitlint/cli', '@commitlint/config-conventional'],
         changelog: ['standard-version'],
       },
-      repository: 'https://gitee.com/eliduty/fes-cconfig.git#vue2',
+      repository: 'https://github.com/eliduty/fes-config.git#vue2',
     },
     vue3: {
       dependencies: {
@@ -21,10 +21,10 @@ module.exports = {
         commitlint: ['@commitlint/cli', '@commitlint/config-conventional'],
         changelog: ['standard-version'],
       },
-      repository: 'https://gitee.com/eliduty/fes-cconfig.git#vue3',
+      repository: 'https://github.com/eliduty/fes-config.git#vue3',
     },
   },
-  // 初始项目配置模板
+  // fes create 项目配置模板
   projectTemplate: {
     'vue-element-admin': {
       repository: 'https://github.com/PanJiaChen/vue-element-admin.git',
