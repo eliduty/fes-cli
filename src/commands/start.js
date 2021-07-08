@@ -121,12 +121,12 @@ async function huskyInit() {
  * 安装依赖
  */
 function installDependencies(dependencies) {
-  const dependenciesSpinner = ora('正在安装项目依赖...\n').start();
+  const spinner = ora('正在安装项目依赖...\n').start();
   if (exec(`npm install -D ${dependencies.join(' ')}`).code !== 0) {
-    dependenciesSpinner.fail(chalk.red('项目依赖安装失败！'));
+    spinner.fail(chalk.red('项目依赖安装失败！'));
     exit(1);
   }
-  dependenciesSpinner.succeed(chalk.green('项目依赖安装成功！'));
+  spinner.succeed(chalk.green('项目依赖安装成功！'));
 }
 
 /**
@@ -136,10 +136,10 @@ function installDependencies(dependencies) {
  */
 async function downloadTemplate(source, target) {
   // git下载配置模板
-  const downloadSpinner = ora('正在下载配置模板...\n').start();
+  const spinner = ora('正在下载配置模板...\n').start();
   try {
     await clone(source, target);
-    downloadSpinner.succeed(chalk.green('配置模板下载成功！'));
+    spinner.succeed(chalk.green('配置模板下载成功！'));
   } catch (error) {
     spinner.fail(chalk.red(`下载配置模板，错误信息：【${error.message}】`));
     exit(1);

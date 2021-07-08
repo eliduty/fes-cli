@@ -7,7 +7,7 @@ const { join } = require('path');
 const { configFileName } = require('../config');
 const { success, error } = require('../utils/log');
 const { clone } = require('../utils/git');
-const { checkGit, checkFileName, checkFileExist } = require('../utils/validate');
+const { checkGit, checkFileName, checkFileExist,checkNpmInit } = require('../utils/validate');
 let fesConfig = require('../config/fes.config');
 const create = async name => {
   const pwd = process.cwd();
@@ -45,7 +45,6 @@ const create = async name => {
   await downloadTemplate(templateGitRepository, destination);
   // 下载成功进入项目目录
   cd(destination);
-  console.log('packageJson', checkNpmInit());
   checkNpmInit() && installDependencies();
   success(`\n\n恭喜，项目创建成功！\n\n模板仓库地址：${templateGitRepository}\n\n`);
   // vscode 编辑器打开项目
