@@ -2,7 +2,7 @@ const merge = require('deepmerge');
 const ora = require('ora');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const { readFileSync } = require('fs');
+const { readFileSync,writeFileSync } = require('fs');
 const { copySync, removeSync } = require('fs-extra');
 const { join } = require('path');
 const { checkGit, checkNpmInit, checkGitInit, checkHuskyInit, checkFileExist, checkFileName } = require('../utils/validate');
@@ -61,13 +61,14 @@ const start = async name => {
   !checkGitInit() && gitInit();
 
   // 安装husky
-  !checkHuskyInit() && huskyInit();
+  // !checkHuskyInit() && huskyInit();
 
   // 安装项目依赖
   installDependencies(dependencies);
 
   // 设置script命令
   setScript();
+
   // git下载配置模板 git下载到临时目录防止git冲突
   await downloadTemplate(templateGitRepository, configTempPath);
 
@@ -159,7 +160,12 @@ function removeTempDir(target) {
 }
 
 function setScript() {
-  exec(`npm set-script release "standard-version -i docs/CHANGELOG.md"`)
+  const pwd = process.cwd();
+  let pkg = readFileSync(join(pwd, 'package.json'), 'utf8');
+  pkg = JSON.parse(pkg);
+  pkg.scripts.release = "standard-version -i docs/CHANGELOG.md";
+  writeFileSync(join(pwd, 'package.json'), JSON.stringify(pkg,'','\t'), { encoding: 'utf8' });
+  // exec(`npm set-script release "standard-version -i docs/CHANGELOG.md"`);
 }
 
 module.exports = start;

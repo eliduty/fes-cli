@@ -3,6 +3,7 @@ module.exports = {
   configTemplate: {
     vue2: {
       dependencies: {
+        husky:['husky@4.3.8'],
         'lint-staged': ['lint-staged'],
         eslint: ['eslint', 'eslint-plugin-vue', 'eslint-plugin-prettier', 'eslint-config-prettier'],
         prettier: ['prettier'],
@@ -14,6 +15,7 @@ module.exports = {
     },
     vue3: {
       dependencies: {
+        husky:['husky@4.3.8'],
         'lint-staged': ['lint-staged'],
         eslint: ['eslint', 'eslint-plugin-vue', 'eslint-plugin-vue', 'eslint-plugin-prettier', 'eslint-config-prettier'],
         prettier: ['prettier'],
