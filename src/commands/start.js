@@ -111,8 +111,8 @@ function gitInit() {
 async function huskyInit() {
   const pwd = process.cwd();
   const spinner = ora('正在初始化husky\n').start();
-  if (exec('npm install -D husky && npx husky install').code !== 0) {
-    spinner.fail(chalk.red('husky初始化失败，请手动执行 `npm install -D husky && npx husky install`'));
+  if (exec('npm install -D husky@4.3.8 && npx husky install').code !== 0) {
+    spinner.fail(chalk.red('husky初始化失败，请手动执行 `npm install -D husky@4.3.8 && npx husky install`'));
     exit(1);
   }
   copySync(join(__dirname, '../git-hooks'), join(pwd, '.husky/'));
