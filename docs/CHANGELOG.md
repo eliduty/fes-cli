@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/eliduty/fes-cli/compare/v1.2.3...v1.2.4) (2021-11-10)
+
+
+### Bug Fixes
+
+* 修改husky版本 ([bec0e26](https://github.com/eliduty/fes-cli/commit/bec0e267302ca81f40bed41fe75ce248272f5823))
+* 优化start命令 ([03ab9bd](https://github.com/eliduty/fes-cli/commit/03ab9bd0252811dc75da177d8f00a99a9cf29381))
+
 ### [1.2.3](https://github.com/eliduty/fes-cli/compare/v1.2.2...v1.2.3) (2021-07-09)
 
 
