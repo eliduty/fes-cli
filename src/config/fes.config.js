@@ -10,6 +10,7 @@ module.exports = {
         stylelint: ['stylelint', 'stylelint-config-standard', 'stylelint-config-rational-order', 'stylelint-order'],
         commitlint: ['@commitlint/cli', '@commitlint/config-conventional'],
         changelog: ['standard-version'],
+        'ls-lint':['@ls-lint/ls-lint']
       },
       repository: 'https://github.com/eliduty/fes-config.git#vue2',
     },
@@ -22,6 +23,7 @@ module.exports = {
         stylelint: ['stylelint', 'stylelint-config-standard', 'stylelint-config-rational-order', 'stylelint-order'],
         commitlint: ['@commitlint/cli', '@commitlint/config-conventional'],
         changelog: ['standard-version'],
+        'ls-lint':['@ls-lint/ls-lint']
       },
       repository: 'https://github.com/eliduty/fes-config.git#vue3',
     },
