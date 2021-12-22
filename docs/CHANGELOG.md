@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/eliduty/fes-cli/compare/v1.2.4...v1.3.0) (2021-12-22)
+
+
+### Features
+
+* 新增小程序配置 ([be1cd2d](https://github.com/eliduty/fes-cli/commit/be1cd2daa3ad70459d885dd833b05e638187cb0b))
+* 新增ls-lint检测 ([933dce0](https://github.com/eliduty/fes-cli/commit/933dce0d364055328539cf02675eef86a1bbb6c1))
+* 增加vue3配置模板 ([08340bd](https://github.com/eliduty/fes-cli/commit/08340bd4d9c49eefa2b5f7c8b1f3bb30d288861e))
+
 ### [1.2.4](https://github.com/eliduty/fes-cli/compare/v1.2.3...v1.2.4) (2021-11-10)
 
 
